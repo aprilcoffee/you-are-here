@@ -1,0 +1,56 @@
+<html>
+
+<head>
+	<title>Rita Example</title>
+	<style>
+		body {
+			overflow: hidden;
+		}
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.3/p5.min.js"></script>
+	<script src="https://unpkg.com/rita"></script>
+	<script src="libraries/p5.sound.js" type="text/javascript"></script>
+	<script src="libraries/p5.speech.js" type="text/javascript"></script>
+	<script src="libraries/p5.dom.js" type="text/javascript"></script>
+
+</head>
+
+<body style="position: absolute;">
+	<script>
+
+		function setup() {
+			createCanvas(displayWidth, displayHeight);
+			background(0);
+			textFont('helvetica', 16);
+			textSize(20);
+			noStroke();
+		}
+
+		function mouseClicked() {
+			lines = markov.generate(100);
+			x = y = 40;
+			var spk = new p5.Speech();
+			var currentText = char(int(97 + random(26)));
+			//system.add(camTarget,currentText);
+			spk.speak(lines);
+			//drawText();
+		}
+
+		function draw() {
+
+
+      background(0);
+			var t = "I love you";
+			//let words = RiTa.tokenize(t)
+			let phonemes = RiTa.phones(t)
+			//let result = RiTa.analyze(t);
+			//console.log(result)
+			for (let i = 0; i < phonemes.length; i++) {
+				text(phonemes[i], (50 + i * 20)  , 50 );
+			}
+
+		}
+	</script>
+</body>
+
+</html>
