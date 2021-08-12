@@ -1,0 +1,63 @@
+<html>
+
+<head>
+	<title>Rita Example</title>
+	<style>
+		body {
+			overflow: hidden;
+		}
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.3/p5.min.js"></script>
+	<script src="https://unpkg.com/rita"></script>
+
+</head>
+
+<body style="position: absolute;">
+	<script>
+		let lines, markov, data1, data2, x = 160,
+			y = 240;
+
+		function preload() {
+			data1 = loadStrings('assets/video.txt');
+			data2 = loadStrings('assets/teleconf.txt');
+		}
+
+		function setup() {
+			createCanvas(displayWidth, displayHeight);
+			background(0);
+			textFont('helvetica', 16);
+			textSize(20);
+			noStroke();
+			// create a markov model w' n=4
+			markov = RiTa.markov(2);
+      lines = ["click to start"];
+			// load text into the model
+			markov.addText(data1.join(' '));
+			markov.addText(data2.join(' '));
+			///drawText();
+		}
+
+		function mouseClicked() {
+			lines = markov.generate(100);
+			x = y = 40;
+			//drawText();
+		}
+
+		function draw() {
+      background(0);
+			var t = "This is a line of text";
+			//let words = RiTa.tokenize(t)
+			//let phonemes = RiTa.phones(t)
+			//let result = RiTa.analyze(t);
+			//console.log(result)
+			for (let i = 0; i < lines.length; i++) {
+				text(lines[i], (50 + i * 20) + 20*sin(radians(frameCount*i)) , 50 + i * 20);
+			}
+
+			//text(lines.join(' '), x, y, 420, 420);
+
+		}
+	</script>
+</body>
+
+</html>
