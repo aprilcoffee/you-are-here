@@ -9,6 +9,9 @@
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.3/p5.min.js"></script>
 	<script src="https://unpkg.com/rita"></script>
+  <script src="libraries/p5.sound.js" type="text/javascript"></script>
+	<script src="libraries/p5.speech.js" type="text/javascript"></script>
+	<script src="libraries/p5.dom.js" type="text/javascript"></script>
 
 </head>
 
@@ -38,8 +41,12 @@
 		}
 
 		function mouseClicked() {
-			lines = markov.generate(100);
+			lines = markov.generate(5);
 			x = y = 40;
+      var spk = new p5.Speech();
+      var currentText = lines.join(' ');
+      //system.add(camTarget,currentText);
+      spk.speak(currentText);
 			//drawText();
 		}
 
@@ -51,7 +58,7 @@
 			//let result = RiTa.analyze(t);
 			//console.log(result)
 			for (let i = 0; i < lines.length; i++) {
-				text(lines[i], (50 + i * 20) + 20*sin(radians(frameCount*i)) , 50 + i * 20);
+				text(lines[i], (50 + i * 20) , 50 + i * 20);
 			}
 
 			//text(lines.join(' '), x, y, 420, 420);
