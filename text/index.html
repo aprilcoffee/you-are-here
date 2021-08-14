@@ -9,7 +9,7 @@
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.3/p5.min.js"></script>
 	<script src="https://unpkg.com/rita"></script>
-  <script src="libraries/p5.sound.js" type="text/javascript"></script>
+	<script src="libraries/p5.sound.js" type="text/javascript"></script>
 	<script src="libraries/p5.speech.js" type="text/javascript"></script>
 	<script src="libraries/p5.dom.js" type="text/javascript"></script>
 
@@ -19,10 +19,11 @@
 	<script>
 		let lines, markov, data1, data2, x = 160,
 			y = 240;
-
+      let img;
 		function preload() {
 			data1 = loadStrings('assets/video.txt');
 			data2 = loadStrings('assets/teleconf.txt');
+      img = loadImage('assets/face.png');
 		}
 
 		function setup() {
@@ -32,8 +33,8 @@
 			textSize(20);
 			noStroke();
 			// create a markov model w' n=4
-			markov = RiTa.markov(2);
-      lines = ["click to start"];
+			markov = RiTa.markov(3);
+			lines = ["click to start"];
 			// load text into the model
 			markov.addText(data1.join(' '));
 			markov.addText(data2.join(' '));
@@ -41,29 +42,49 @@
 		}
 
 		function mouseClicked() {
-			lines = markov.generate(5);
+			lines = markov.generate(80);
 			x = y = 40;
-      var spk = new p5.Speech();
-      var currentText = lines.join(' ');
-      //system.add(camTarget,currentText);
-      //spk.speak(lines[0]);
+			var spk = new p5.Speech();
+			var currentText = lines.join(' ');
+			//system.add(camTarget,currentText);
+			//spk.speak(lines[0]);
 			//drawText();
 		}
 
 		function draw() {
-      background(0);
+			background(0);
+      blendMode(LIGHTEST);
+
 			var t = "This is a line of text";
 			//let words = RiTa.tokenize(t)
 			//let phonemes = RiTa.phones(t)
 			//let result = RiTa.analyze(t);
 			//console.log(result)
+			textSize(20);
+
 			for (let i = 0; i < lines.length; i++) {
-				text(lines[i], (50 + i * 20) , 50 + i * 20);
+					fill(map(abs(50 + i * 20 + 10 * sin(radians(frameCount + i - 30)) - mouseY), 1000, 0, 0, 255), 255);
+
+				var w = RiTa.tokens(lines[i]);
+				//for (let k = 0; k < w.length; k++) {
+				//    text(w[i], (50 + i * 10) + 10 * sin(radians(frameCount + i)), 50 + i * 20 + 10 * sin(radians(frameCount + i - 30)));
+				//}
+				text(lines[i], (50 + i * 10) + 10 * sin(radians(frameCount + i)), 50 + i * 20 + 10 * sin(radians(frameCount + i - 30)));
+				console.log(lines[i]);
 			}
+      image(img,0,0,width,height);
+
+			textSize(40);
+			fill(255, 255);
+			text(lines[0], 100, 500);
 
 			//text(lines.join(' '), x, y, 420, 420);
 
 		}
+    function rdraw(){
+
+
+    }
 	</script>
 </body>
 
